@@ -1,3 +1,5 @@
+const { github_id, github_secret } = require('./secrets')
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -34,7 +36,9 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/vuex-persist', ssr: false }
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -43,17 +47,48 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build'],
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxtjs/tailwindcss',
+  ],
   /*
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://github.com/nuxt-community/modules/tree/master/packages/bulma
-    '@nuxtjs/bulma',
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    '@nuxtjs/auth',
+    ['nuxt-fontawesome', {
+      component: 'fa',
+      imports: [
+        //import whole set
+        {
+          set: '@fortawesome/free-solid-svg-icons',
+          icons: ['fas']
+        },
+        {
+          set: '@fortawesome/free-regular-svg-icons',
+          icons: ['far']
+        },
+      ]
+    }]
   ],
+  auth: {
+    strategies: {
+      github: {
+        client_id: github_id,
+        client_secret: github_secret,
+        scope: ['user', 'email', 'repo'],
+        token_type: 'token',
+      },
+    },
+    redirect: {
+      login: '/login',
+      logout: false,
+      callback: '/login',
+      home: '/repos'
+    }
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
