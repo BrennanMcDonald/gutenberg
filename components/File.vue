@@ -15,11 +15,10 @@
   </div>
   <editor
     ref="MarkdownEditor"
-    :key="file_content.markdown"
     :initialValue="file_content.markdown"
     initialEditType="wysiwyg"
-    height="100%"
     @change="onEditorChange"
+    height="100%"
     v-else
   />
 </template>
@@ -49,36 +48,13 @@ export default Vue.extend({
       updateContent: 'files/updateContent',
       saveFile: 'files/saveFile',
     }),
-    saveFile() {
-      this.$store.commit('files/saveFile', {
-        owner: this.owner,
-        repo: this.repo,
-      })
-    },
     onEditorChange() {
-      if (
-        this.file_content.markdown ===
-        this.$refs.MarkdownEditor.invoke('getMarkdown')
-      ) {
-        this.updateContent(this.$refs.MarkdownEditor.invoke('getMarkdown'))
-        this.$refs.MarkdownEditor.invoke(
-          'setMarkdown',
-          this.$refs.MarkdownEditor.invoke('getMarkdown')
-        )
-      }
+      let content = this.$refs.MarkdownEditor.invoke('getMarkdown');
+      console.log(content)
+      this.updateContent(content)
     },
   },
   computed: {
-    raw_markdown() {
-      if (this.$store.state.files.selected_data.content) {
-        return Buffer.from(
-          this.$store.state.files.selected_data.content,
-          'base64'
-        ).toString()
-      } else {
-        return ''
-      }
-    },
     file_content() {
       if (this.$store.state.files.selected_data.content) {
         let markdown = Buffer.from(

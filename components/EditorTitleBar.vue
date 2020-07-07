@@ -10,6 +10,10 @@
         class="py-2 px-4 rounded-l-lg border border-r-0 hover:bg-gray-500 hover:text-white cursor-pointer -mr-1"
       >Save</button>
       <button
+        @click="() => this.$router.push('/repos')"
+        class="py-2 px-4  border border-r-0 hover:bg-gray-500 hover:text-white cursor-pointer -mr-1"
+      >Back to Repo List</button>
+      <button
         class="py-2 px-4 rounded-r-lg border hover:bg-gray-500 hover:text-white cursor-pointer"
       >View metadata</button>
     </div>
@@ -21,7 +25,7 @@ import Vue from 'vue'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 
 export default Vue.extend({
-  props: ['repo', 'menuToggle', 'owner'],
+  props: ['repo', 'menuToggle', 'owner', 'editorRef'],
   computed: {
     faBars() {
       return faBars

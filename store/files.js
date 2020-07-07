@@ -32,8 +32,8 @@ export const mutations = {
             'Content-Type': 'application/json'
         };
         this.$axios.put(`https://api.github.com/repos/${owner}/${repo}/contents/${state.selected.path}?ref=master`,data, headers)
-            .then(x => {
-                console.log(x);
+            .then(({ data }) => {
+                this.commit("files/setFileContent", data.content)
             })
         /*
         this.$axios({
