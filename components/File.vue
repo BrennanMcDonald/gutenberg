@@ -1,29 +1,32 @@
 <template>
-  <div class="flex-grow flex-shrink-0 h-full">
-      <div class="p-4 border flex">
-        <a
-          @click="saveFile"
-          class="py-2 px-4 border rounded border-blue-600 hover:bg-blue-600 hover:text-white cursor-pointer"
-        >Save</a>
-        <a
-          class="py-2 flex-end px-4 border rounded border-blue-600 hover:bg-blue-600 hover:text-white cursor-pointer"
-        >View metadata</a>
+  <div class="flex-grow flex-shrink-0 h-full" v-if="false">
+    <div class="flex p-4 h-full">
+      <div class="w-1/2">
+        <textarea v-bind:value="raw_markdown" @input="updateContent" class="resize w-full h-full"></textarea>
       </div>
-      <div class="flex p-4 h-full">
-        <div class="w-1/2">
-          <textarea v-bind:value="raw_markdown" @input="updateContent" class="resize w-full h-full"></textarea>
-        </div>
-        <div class="w-1/2 h-full overflow-x-scoll">
-          <div class='p-4 m-4 shadow h-full overflow-x-scroll' v-html="file_content.html" id="Markdown"></div>
-        </div>
+      <div class="w-1/2 h-full overflow-x-scoll">
+        <div
+          class="p-4 m-4 shadow h-full overflow-x-scroll"
+          v-html="file_content.html"
+          id="Markdown"
+        ></div>
       </div>
+    </div>
   </div>
+  <editor
+    ref="MarkdownEditor"
+    :key="file_content.markdown"
+    :initialValue="file_content.markdown"
+    initialEditType="wysiwyg"
+    height="100%"
+    @change="onEditorChange"
+    v-else
+  />
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import showdown from 'showdown'
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import { mapMutations } from 'vuex'
 
 const converter = new showdown.Converter({})
@@ -41,29 +44,29 @@ export default Vue.extend({
       editor: null,
     }
   },
-  components: {
-    EditorContent,
-  },
-  mounted() {
-    this.editor = new Editor({
-      content: this.file_content.html,
-      onUpdate: this.updateContent,
-    })
-  },
-  beforeDestroy() {
-    this.editor.destroy()
-  },
   methods: {
     ...mapMutations({
       updateContent: 'files/updateContent',
-      saveFile: 'files/saveFile'
+      saveFile: 'files/saveFile',
     }),
     saveFile() {
       this.$store.commit('files/saveFile', {
         owner: this.owner,
         repo: this.repo,
       })
-    }
+    },
+    onEditorChange() {
+      if (
+        this.file_content.markdown ===
+        this.$refs.MarkdownEditor.invoke('getMarkdown')
+      ) {
+        this.updateContent(this.$refs.MarkdownEditor.invoke('getMarkdown'))
+        this.$refs.MarkdownEditor.invoke(
+          'setMarkdown',
+          this.$refs.MarkdownEditor.invoke('getMarkdown')
+        )
+      }
+    },
   },
   computed: {
     raw_markdown() {

@@ -2,8 +2,7 @@ export const state = () => ({
     selected: {},
     list: [],
     selected_data: {},
-
-})
+});
 
 export const mutations = {
     setSelectedFile(state, file, root, test) {
@@ -17,10 +16,11 @@ export const mutations = {
         state.list = files;
     },
     setFileContent(state, content) {
-        state.selected_data = content;
+        state.selected_data = content
     },
-    updateContent(state, event) {
-        state.selected_data.content = Buffer.from(event.target.value).toString('base64');
+    updateContent(state, content) {
+        if(content)
+            state.selected_data.content = Buffer.from(content).toString('base64');
     },
     saveFile(state, { owner, repo }) {
         let data = {

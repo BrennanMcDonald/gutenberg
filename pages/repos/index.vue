@@ -21,6 +21,7 @@ import { mapMutations, mapGetters } from 'vuex'
 import RepoButton from '~/components/RepoButton.vue'
 
 export default Vue.extend({
+  middleware: 'auth',
   created() {
     this.clean()
     this.fetchRepos()
