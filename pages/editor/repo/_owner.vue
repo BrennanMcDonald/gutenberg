@@ -84,7 +84,7 @@ export default Vue.extend({
       let { name: repo, owner } = this.$route.params;
       this.$store.commit('files/newFile', { ...this.newFile, repo, owner });
     },
-    selectFile(file) {
+    selectFile(file: {path: String}) {
       let { name , owner } = this.$route.params;
       this.editor_key = Math.random();
       this.setSelectedFile(file);
