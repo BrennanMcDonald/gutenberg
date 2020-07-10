@@ -59,6 +59,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/auth',
+    '@nuxtjs/markdownit',
     ['nuxt-fontawesome', {
       component: 'fa',
       imports: [
