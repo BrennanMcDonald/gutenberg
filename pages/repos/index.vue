@@ -1,5 +1,9 @@
 <template>
   <div class="container mx-auto">
+    <div>
+      <h2 class="font-sans text-5xl font-semibold p-2">Repos</h2>
+    </div>
+    <hr />
     <div class="flex flex-wrap">
       <repo-button
         v-for="favourite in favourites"
@@ -8,7 +12,6 @@
         :favourite="true"
       />
     </div>
-    <hr />
     <div class="flex flex-wrap">
       <repo-button v-for="repo in repos" v-bind:key="repo.sha" :repo="repo" :favourite="false" />
     </div>

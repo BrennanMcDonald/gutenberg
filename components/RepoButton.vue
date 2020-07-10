@@ -2,7 +2,7 @@
   <div class="p-2 lg:w-1/3 md:w-1/2 w-full cursor-pointer">
     <div
       class="h-full flex items-center border-gray-200 border p-4 rounded-lg hover:shadow-sm"
-      @click="(e) => { this.$nuxt.$loading.start(); this.$router.push(`/editor/repo/${repo.owner.login}/${repo.name}`) }"
+      @click="navigate"
     >
       <div
         class="rounded-full w-16 h-16 circle mr-4 text-3xl text-bold justify-center items-center flex"
@@ -47,6 +47,11 @@ export default Vue.extend({
     removeFavourite(id: Number) {
       this.$store.commit('repos/removeFavourite', id)
     },
+    navigate() {
+      let { login: owner } = this.repo.owner;
+      let { name: repo } = this.repo;
+      this.$router.push(`/editor/repo/${owner}/${repo}`);
+    }
   },
   computed: {
     fas() {

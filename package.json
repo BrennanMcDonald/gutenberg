@@ -21,6 +21,7 @@
     "@nuxtjs/bulma": "^1.2.7",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "@nuxtjs/tailwindcss": "^2.0.0",
+    "@nuxtjs/toast": "^3.3.0",
     "@toast-ui/vue-editor": "^2.2.0",
     "@types/showdown": "^1.9.3",
     "emotion": "^10.0.27",
@@ -30,10 +31,11 @@
     "sass-loader": "^9.0.1",
     "showdown": "^1.9.1",
     "tiptap": "^1.27.1",
+    "ts-loader": "^8.0.0",
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "^1.0.3",
+    "@nuxt/typescript-build": "^2.0.0",
     "@nuxtjs/eslint-config": "^3.0.0",
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",

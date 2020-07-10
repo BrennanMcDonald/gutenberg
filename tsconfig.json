@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2018",
     "module": "esnext",
+    "strictNullChecks": false,
     "moduleResolution": "node",
     "lib": [
       "esnext",
@@ -25,7 +26,8 @@
     },
     "types": [
       "@types/node",
-      "@nuxt/types"
+      "@nuxt/types",
+      "@nuxtjs/axios",
     ]
   },
   "exclude": [
