@@ -14,6 +14,8 @@ export const mutations = {
     },
     clearFileList(state) {
         state.files = [];
+        state.file_contents = {};
+        state.selected_file_contents = "";
     },
     getFileList(state, { repo, owner }) {
         let commit_url = `https://api.github.com/repos/${owner}/${repo}/commits`;
