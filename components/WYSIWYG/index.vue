@@ -15,14 +15,11 @@
         </button>
         <dropdown v-show="md_toggle" class="px-2" v-bind:key="Index" :options="Item" v-else />
       </template>
-        <button
-          @click="() => { md_toggle = !md_toggle; }"
-          class="h-full float-right pr-4"
-        >
-          <span>
-            <b>Markdown</b>
-          </span>
-        </button>
+      <button @click="() => { md_toggle = !md_toggle; }" class="h-full float-right pr-4">
+        <span>
+          <b>Markdown</b>
+        </span>
+      </button>
     </div>
     <div
       class="editor p-10 border border-white flex-1 z-0"
@@ -56,45 +53,40 @@ export default Vue.extend({
   },
   methods: {
     onChange(event: Event) {
-      let target = <HTMLElement>event.target;
-      this.$emit('input', converter.makeMarkdown(target.innerHTML));
-    },
-    bold() {
-      document.execCommand('bold');
+      let target = <HTMLElement>event.target
+      this.$emit('input', converter.makeMarkdown(target.innerHTML))
     },
   },
   data() {
     return {
-      md_toggle: true
+      md_toggle: true,
     }
   },
   computed: {
     MenuButtons() {
-      return MenuButtons;
+      return MenuButtons
     },
     EditorRef() {
-      return this.$refs.EditorContent;
+      return this.$refs.EditorContent
     },
     no_metadata_content() {
-      console.log(this.value)
       if (this.value) {
-        return this.value.replace(/[\+{3}](.*)[\+{3}]/gms, '');
+        return this.value.replace(/[\+{3}](.*)[\+{3}]/gms, '')
       } else {
-        return '';
+        return ''
       }
     },
     html_content() {
-      let result = "";
+      let result = ''
       if (this.md_toggle) {
-        result = converter.makeHtml(this.value);
+        result = converter.makeHtml(this.value)
       } else {
-        result = this.value;
+        result = this.value
       }
-      console.log(result);
-      return result;
+      return result
     },
   },
-});
+})
 </script>
 
 <style lang="scss">

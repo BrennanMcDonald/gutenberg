@@ -34,7 +34,6 @@ import { mapMutations, mapGetters } from 'vuex'
 export default Vue.extend({
   middleware: 'auth',
   mounted() {
-    console.log(this.$store.state.repos.list)
     this.$store.commit('repos/select', this.sha)
   },
   data() {

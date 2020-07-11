@@ -3,6 +3,7 @@ export const state = () => ({
     selected_file_contents: "",
     files: [],
     file_contents: {},
+    changed_files: [],
 });
 
 export const mutations = {
@@ -15,6 +16,7 @@ export const mutations = {
     },
     clearFileList(state) {
         state.files = [];
+        state.changed_files = [];
         state.file_contents = {};
         state.selected_file_contents = "";
     },
@@ -38,8 +40,6 @@ export const mutations = {
         state.file_contents[path] = content;
     },
     getFileContents(state, { path, owner, name: repo }) {
-        // Check if we have the file
-        console.log(owner);
         if (path in state.file_contents) {
             state.selected_file_contents = state.file_contents[path];
         } else {
@@ -49,23 +49,29 @@ export const mutations = {
             });
         }
     },
-    updateContent(state, { sha, content }) {
-        if (content)
-            state.file_contents[sha] = Buffer.from(content).toString('base64');
+    updateContent(state, { path, markdown }) {
+        if (markdown) {
+            state.file_contents[path] = Buffer.from(markdown).toString('base64');
+            state.changed_files.push(path);
+            state.changed_files = Array.from(new Set(state.changed_files));
+        }
     },
     saveFile(state, { owner, repo }) {
-        let data = {
-            message: "CopperCMS Update",
-            content: state.selected_data.content,
-            sha: state.selected_data.sha,
-        };
-        let headers = {
-            'Content-Type': 'application/json'
-        };
-        this.$axios.put(`https://api.github.com/repos/${owner}/${repo}/contents/${state.selected.path}?ref=master`, data, headers)
-            .then(({ data }) => {
-                // this.commit("files/setFileContent", data.content)
-            })
+        state.changed_files.forEach(path => {
+            let data = {
+                message: "CopperCMS Update",
+                content: state.file_contents[path],
+                sha: state.files.filter(el => el.path === path)[0].sha,
+            };
+            let headers = {
+                'Content-Type': 'application/json'
+            };
+            this.$axios.put(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=master`, data, headers)
+                .then(({ data }) => {
+                    // this.commit("files/setFileContent", data.content)
+                })
+        });
+        state.changed_files = [];
     },
     newFile(state, { name, path, owner, repo }) {
         let data = {

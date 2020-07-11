@@ -13,8 +13,8 @@
           >A personal knowledge database with publishing ability.</p>
           <div class="mt-10">
             <a
-              v-show="!logged_in"
-              @click="() => { this.$auth.loginWith('github') }"
+              v-show="!logged_in && !loading && !is_callback"
+              @click="() => { loading = true; this.$auth.loginWith('github') }"
               rel="noopener noreferrer"
               class="border py-4 px-4 rounded hover:bg-gray-100 cursor-pointer"
             >
@@ -23,11 +23,15 @@
               </span>Login with Github
             </a>
             <a
-              v-show="logged_in"
+              v-show="logged_in && !loading && !is_callback"
               href="/repos"
               rel="noopener noreferrer"
               class="border py-4 px-4 rounded hover:bg-gray-100"
             >Start Writing!</a>
+            <a
+              v-show="loading || is_callback"
+              class="border py-4 px-4 rounded hover:bg-gray-100"
+            ><fa :icon="faSpinner" class="fa-spin" /></a>
           </div>
         </div>
       </div>
@@ -42,6 +46,7 @@
 import Vue from 'vue'
 import showdown from 'showdown'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 import README from '../README.md'
 
@@ -53,14 +58,26 @@ converter.setOption('metadata', 'true')
 converter.setFlavor('github')
 
 export default Vue.extend({
-  auth: false,
+  mounted() {
+  },
+  data() {
+    return {
+      loading: false
+    } 
+  },
   computed: {
     faGithub() {
       return faGithub;
     },
+    faSpinner() {
+      return faSpinner;
+    },
     logged_in() {
       return this.$auth.loggedIn;
-    }
+    },
+    is_callback() {
+      return ('code' in this.$route.query) && ('state' in this.$route.query);
+    },
   }
 })
 </script>

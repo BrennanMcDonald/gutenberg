@@ -89,10 +89,12 @@ export default {
     },
     redirect: {
       login: '/',
-      logout: false,
+      logout: '/',
       callback: '/',
       home: '/repos'
-    }
+    },
+    fullPathRedirect: true,
+    watchLoggedIn: true
   },
   /*
    ** Axios module configuration

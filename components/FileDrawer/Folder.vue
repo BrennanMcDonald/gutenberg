@@ -1,6 +1,6 @@
 <template>
-  <div v-bind:class="{'pl-2':(folder.name !== '/')}">
-    <span @click="toggleCollapse" class="cursor-pointer" v-show="folder.name !== '/'">
+  <div v-bind:class="{'pl-3 border-l py-1':(folder.name !== '/')}">
+    <span @click="toggleCollapse" class="cursor-pointer py-2" v-show="folder.name !== '/'">
       <fa :icon="faChevronDown" v-show="!collapsed" />
       <fa :icon="faChevronRight" v-show="collapsed" />
       {{ folder.name }}
@@ -11,9 +11,9 @@
         v-for="file in folder.files"
         v-bind:key="file.path"
         @click="() => { selectFile(file.file_object) }"
-        class="cursor-pointer pl-2 pb-1"
-      >
-        {{file.name}}
+        class="cursor-pointer pl-2 py-1 border-l"
+        v-bind:class="{italic: unsaved_files.includes(file.path)}">
+        <span v-show="unsaved_files.includes(file.path)">* </span>{{file.name}}
       </div>
     </div>
   </div>
@@ -22,12 +22,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import Folder from './Folder.vue'
+import { mapMutations } from 'vuex'
+
 import { faFolder, faFile } from '@fortawesome/free-regular-svg-icons'
 import {
   faChevronDown,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons'
-import { mapMutations } from 'vuex'
 
 export default Vue.extend({
   name: 'folder',
@@ -65,6 +66,9 @@ export default Vue.extend({
     faChevronRight() {
       return faChevronRight
     },
+    unsaved_files() {
+      return this.$store.state.files.changed_files;
+    }
   },
 })
 </script>

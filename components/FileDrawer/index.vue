@@ -20,8 +20,6 @@ var tree = {
   },
 }
 
-function buildTree(parts) {}
-
 export default Vue.extend({
   props: ['files', 'showMenu', 'selectedFile'],
   data() {
@@ -47,7 +45,7 @@ export default Vue.extend({
         path: file.path,
         name,
         owner,
-      })
+      });
     },
   },
   computed: {
@@ -95,7 +93,6 @@ export default Vue.extend({
       }
 
       file_paths.forEach(addnode)
-      console.log(tree)
       return tree
     },
   },

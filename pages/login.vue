@@ -8,7 +8,6 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  auth: false,
   methods: {
     login() {
       this.$auth.loginWith('github');

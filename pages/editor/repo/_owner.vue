@@ -7,7 +7,7 @@
       :newFile="() => showNewFile = !showNewFile"
     />
     <div class="flex overflow-hidden h-full">
-      <file-drawer :showMenu="showMenu" :files="files" :selectedFile="selectedFile"  />
+      <file-drawer :showMenu="showMenu" :files="files" :selectedFile="selectedFile" />
       <div class="flex-1 overflow-y-scroll h-screen flex">
         <file :owner="owner" :repo="name" :sha="selectedFile.sha" :path="selectedFile.path" />
       </div>
@@ -49,6 +49,20 @@ export default Vue.extend({
     owner() {
       return this.$route.params.owner
     },
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.$store.state.files.changed_files.length > 0) {
+      const answer = window.confirm(
+        'Do you really want to leave?\nyou have unsaved changes!'
+      )
+      if (answer) {
+        next()
+      } else {
+        next(false)
+      }
+    } else {
+      next();
+    }
   },
 })
 </script>
