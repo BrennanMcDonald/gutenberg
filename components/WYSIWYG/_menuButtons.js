@@ -106,4 +106,10 @@ export default [
             safeExecute('formatBlock', null, '<p>');
         },
     },
+    {
+        icon: faRemoveFormat,
+        command: () => {
+            safeExecute('formatBlock', null, '<p>');
+        },
+    },
 ]

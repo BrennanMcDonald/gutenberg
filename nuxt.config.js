@@ -1,4 +1,4 @@
-const { github_id, github_secret } = require('./secrets')
+const { github_id, github_secret, github_redirect_uri } = require('./secrets')
 
 export default {
   /*
@@ -38,7 +38,6 @@ export default {
    */
   plugins: [
     { src: '~/plugins/vuex-persist', ssr: false },
-    { src: '~/plugins/tui_editor.client.js' }
   ],
   /*
    ** Auto import components
@@ -52,6 +51,9 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/tailwindcss',
   ],
+  router: {
+    middleware: ['auth']
+  },
   /*
    ** Nuxt.js modules
    */
@@ -82,12 +84,13 @@ export default {
         client_secret: github_secret,
         scope: ['user', 'email', 'repo'],
         token_type: 'token',
+        redirect_uri: redirect_url,
       },
     },
     redirect: {
-      login: '/login',
+      login: '/',
       logout: false,
-      callback: '/login',
+      callback: '/',
       home: '/repos'
     }
   },

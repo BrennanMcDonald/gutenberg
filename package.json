@@ -25,6 +25,7 @@
     "@nuxtjs/toast": "^3.3.0",
     "@toast-ui/vue-editor": "^2.2.0",
     "@types/showdown": "^1.9.3",
+    "dotenv": "^8.2.0",
     "emotion": "^10.0.27",
     "nuxt": "^2.13.0",
     "nuxt-fontawesome": "^0.4.0",

@@ -23,7 +23,7 @@ export default Vue.extend({
       let { selected_file_contents } = this.$store.state.files;
       if(this.$store.state.files.selected_file_contents){
         let markdown = Buffer.from(selected_file_contents,'base64').toString();
-        return markdown
+        return markdown;
       } else {
         return "";
       }

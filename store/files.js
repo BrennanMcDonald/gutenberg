@@ -6,7 +6,8 @@ export const state = () => ({
 });
 
 export const mutations = {
-    setSelectedFile(state, file, root, test) {
+    setSelectedFile(state, file) {
+        console.log(file);
         state.selected = file;
     },
     setFiles(state, files) {
@@ -24,18 +25,21 @@ export const mutations = {
             let tree_url = `https://api.github.com/repos/${owner}/${repo}/git/trees/${sha}?recursive=1`;
             this.$axios.get(tree_url).then(({ data: tree_data }) => {
                 let { tree } = tree_data;
+                let { path } = tree.filter(el => el.path.includes('.md'))[0];
+                let name = repo;
                 this.commit('files/setFiles', tree);
+                this.commit('files/setSelectedFile', tree[0]);
+                this.commit('files/getFileContents', { path, owner, name });
             });
         });
     },
     setSelectedFileContents(state, { content, path }) {
-        console.log(state.file_contents);
         state.selected_file_contents = content;
         state.file_contents[path] = content;
     },
     getFileContents(state, { path, owner, name: repo }) {
         // Check if we have the file
-        console.log(state.file_contents);
+        console.log(owner);
         if (path in state.file_contents) {
             state.selected_file_contents = state.file_contents[path];
         } else {
@@ -77,7 +81,7 @@ export const mutations = {
         } else {
             FullFilePath = (path[path.length - 1] === "/") ? path + name : path + '/' + name;
         }
-        
+
         this.$axios.put(`https://api.github.com/repos/${owner}/${repo}/contents/${FullFilePath}?ref=master`, data, headers)
             .then(({ data }) => {
                 // this.commit("files/setFileContent", data.content)

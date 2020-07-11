@@ -6,15 +6,23 @@
           class="h-full w-10"
           @click="Item.command"
           v-bind:key="Index"
-          v-if="Item.hasOwnProperty('icon') || Item.hasOwnProperty('text')"
-        >
-          <fa :icon="Item.icon" v-show="Item.icon" />
+          v-show="md_toggle"
+          v-if="Item.hasOwnProperty('icon') || Item.hasOwnProperty('text')">
+          <fa v-show="Item.icon" :icon="Item.icon" />
           <span v-show="Item.text">
             <b>{{Item.text}}</b>
           </span>
         </button>
-        <dropdown class="px-2" v-bind:key="Index" :options="Item" v-else />
+        <dropdown v-show="md_toggle" class="px-2" v-bind:key="Index" :options="Item" v-else />
       </template>
+        <button
+          @click="() => { md_toggle = !md_toggle; }"
+          class="h-full float-right pr-4"
+        >
+          <span>
+            <b>Markdown</b>
+          </span>
+        </button>
     </div>
     <div
       class="editor p-10 border border-white flex-1 z-0"
@@ -44,37 +52,49 @@ converter.setFlavor('github')
 export default Vue.extend({
   props: ['value'],
   components: {
-    Dropdown
+    Dropdown,
   },
   methods: {
     onChange(event: Event) {
-      let target = <HTMLElement> event.target;
-      this.$emit('input', converter.makeMarkdown(target.innerHTML))
+      let target = <HTMLElement>event.target;
+      this.$emit('input', converter.makeMarkdown(target.innerHTML));
     },
     bold() {
-      document.execCommand('bold')
+      document.execCommand('bold');
     },
+  },
+  data() {
+    return {
+      md_toggle: true
+    }
   },
   computed: {
     MenuButtons() {
-      return MenuButtons
+      return MenuButtons;
     },
     EditorRef() {
-      return this.$refs.EditorContent
+      return this.$refs.EditorContent;
     },
     no_metadata_content() {
       console.log(this.value)
       if (this.value) {
-        return this.value.replace(/[\+{3}](.*)[\+{3}]/gms, '')
+        return this.value.replace(/[\+{3}](.*)[\+{3}]/gms, '');
       } else {
-        return ''
+        return '';
       }
     },
     html_content() {
-      return converter.makeHtml(this.value)
+      let result = "";
+      if (this.md_toggle) {
+        result = converter.makeHtml(this.value);
+      } else {
+        result = this.value;
+      }
+      console.log(result);
+      return result;
     },
   },
-})
+});
 </script>
 
 <style lang="scss">
@@ -300,13 +320,12 @@ export default Vue.extend({
   }
 
   ul {
-    list-style:initial;
+    list-style: initial;
   }
 
   ol {
     list-style: decimal;
   }
-
 }
 </style>
 

@@ -3,9 +3,9 @@ export const state = () => ({
   favourites: [],
   repo: {
     metadata: {},
-    tree: {}
-  }
-})
+    tree: {},
+  },
+});
 
 export const mutations = {
   clean(state) {

@@ -1,9 +1,3 @@
-/*
-** TailwindCSS Configuration File
-**
-** Docs: https://tailwindcss.com/docs/configuration
-** Default: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
-*/
 module.exports = {
   theme: {
     extend: {
@@ -17,6 +11,9 @@ module.exports = {
         '10px': '10px',
         '20px': '20px',
         '40px': '40px',
+      },
+      variants: {
+        borderWidth: ['responsive', 'hover'],
       }
     }
   },
