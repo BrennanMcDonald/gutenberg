@@ -6,7 +6,7 @@
           <div>
             <img class="flex-shrink-1" src="~/assets/img/printing_press.gif" />
           </div>
-          <h1 class="text-6xl font-semibold font-sans text-center">📝Gutenburg</h1>
+          <h1 class="text-6xl font-semibold font-sans text-center">📝Gutenberg</h1>
           <hr />
           <p
             class="text-xl font-sans text-center"

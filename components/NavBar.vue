@@ -2,7 +2,7 @@
   <nav class="flex justify-center flex-wrap p-6">
     <div class="container px-4 justify-between flex">
       <div class="flex text-gray-800">
-        <span class="font-semibold text-xl tracking-tight">📝 Gutenburg</span>
+        <span class="font-semibold text-xl tracking-wide">📝 Gutenberg</span>
       </div>
       <div>
         <a

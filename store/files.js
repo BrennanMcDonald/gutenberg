@@ -35,6 +35,17 @@ export const mutations = {
             });
         });
     },
+    refreshFileList(state, { repo, owner }) {
+        let commit_url = `https://api.github.com/repos/${owner}/${repo}/commits`;
+        this.$axios.get(commit_url).then(({ data: commit_data }) => {
+            let { sha } = commit_data[0];
+            let tree_url = `https://api.github.com/repos/${owner}/${repo}/git/trees/${sha}?recursive=1`;
+            this.$axios.get(tree_url).then(({ data: tree_data }) => {
+                let { tree } = tree_data;
+                this.commit('files/setFiles', tree);
+            });
+        });
+    },
     setSelectedFileContents(state, { content, path }) {
         state.selected_file_contents = content;
         state.file_contents[path] = content;
@@ -68,7 +79,17 @@ export const mutations = {
             };
             this.$axios.put(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=master`, data, headers)
                 .then(({ data }) => {
-                    // this.commit("files/setFileContent", data.content)
+                    delete state.file_contents[path];
+                    let name = repo;
+                    this.commit("files/getFileContents", {
+                        owner,
+                        name,
+                        path,
+                    });
+                    this.commit("files/refreshFileList", {
+                        owner,
+                        repo,
+                    });
                 })
         });
         state.changed_files = [];

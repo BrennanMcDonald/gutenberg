@@ -84,7 +84,7 @@ export default {
         client_secret: github_secret,
         scope: ['user', 'email', 'repo'],
         token_type: 'token',
-        redirect_uri: redirect_url,
+        redirect_uri: github_redirect_uri,
       },
     },
     redirect: {
