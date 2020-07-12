@@ -3,7 +3,7 @@
     <nav-bar />
     <div class="container mx-auto">
       <div>
-        <h2 class="font-sans text-5xl font-semibold p-2">Repos</h2>
+        <h2 class="font-sans text-3xl text-gray-900 font-semibold p-2 tracking-wide">Repos</h2>
       </div>
       <hr />
       <div class="flex flex-wrap">

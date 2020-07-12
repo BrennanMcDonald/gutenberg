@@ -1,3 +1,13 @@
+function compare( a, b ) {
+  if ( a.name.toLowerCase() < b.name.toLowerCase() ){
+    return -1;
+  }
+  if ( a.name.toLowerCase() > b.name.toLowerCase() ){
+    return 1;
+  }
+  return 0;
+}
+
 export const state = () => ({
   list: [],
   favourites: [],
@@ -29,8 +39,17 @@ export const mutations = {
   },
   async fetchRepos(state) {
     state.list = [];
-    let { data } = await this.$axios.get("https://api.github.com/user/repos");
-    this.commit("repos/setRepos", data);
+    let repos = [];
+    let url = "https://api.github.com/user/repos?visibility=all";
+    let res;
+    do {
+      res = await this.$axios.get(url);
+      let { data } = res;
+      repos = repos.concat(data);
+      url = res.headers.link.match(/(?<=^.)([^>]*)/gs)[0]
+    } while(res.headers.link.includes('next'));
+    repos = repos.sort(compare);
+    this.commit("repos/setRepos", repos);
   },
   async select(state, id) {
     let repo = state.list.filter(el => el.id === id)[0];
