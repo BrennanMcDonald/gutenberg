@@ -1,21 +1,53 @@
 version: "3"
 
+volumes:
+  http:
+  certs:
+  vhost:
+  conf:
+
 services:
   nuxt:
     build: .
     container_name: gutenberg-website
     restart: always
+    environment:
+      - PORT=3000
+      - VIRTUAL_HOST=gutenberg.brennanmcdonald.ca
+      - LETSENCRYPT_HOST=gutenberg.brennanmcdonald.ca
     ports:
       - "3000:3000"
     command:
       "npm run start"
-
-  nginx:
-    image: nginx:1.13
-    container_name: gutenberg-nginx
+  nginx-proxy:
+    container_name: docker-proxy
+    image: jwilder/nginx-proxy
     ports:
       - "80:80"
+      - "443:443"
     volumes:
-      - ./nginx:/etc/nginx/conf.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - conf:/etc/nginx/conf.d:rw
+      - vhost:/etc/nginx/vhost.d:rw
+      - http:/usr/share/nginx/html:rw
+      - certs:/etc/nginx/certs:ro
     depends_on:
       - nuxt
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt-nginx-proxy-companion
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - DEFAULT_EMAIL=brennan.mcdonald.mail@gmail.com
+      - NGINX_PROXY_CONTAINER=docker-proxy
+    volumes:
+      - conf:/etc/nginx/conf.d:rw
+      - vhost:/etc/nginx/vhost.d:rw
+      - http:/usr/share/nginx/html:rw
+      - certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    depends_on:
+      - nuxt
+      - nginx-proxy
