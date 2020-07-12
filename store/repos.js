@@ -46,7 +46,7 @@ export const mutations = {
       res = await this.$axios.get(url);
       let { data } = res;
       repos = repos.concat(data);
-      url = res.headers.link.match(/(?<=^.)([^>]*)/gs)[0]
+      url = res.headers.link.split(',').filter(el => el.includes('next'))[0].match(/<(.*)>/sg)[0].replace(/[<|>]/g,"")
     } while(res.headers.link.includes('next'));
     repos = repos.sort(compare);
     this.commit("repos/setRepos", repos);
