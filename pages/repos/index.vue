@@ -21,11 +21,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import { mapMutations, mapGetters } from 'vuex'
 import RepoButton from '~/components/RepoButton.vue'
-import NavBar from '~/components/NavBar.vue'
+import NavBar from '~/components/IndexNavbar.vue'
 
 export default Vue.extend({
   middleware: 'auth',
@@ -44,12 +44,12 @@ export default Vue.extend({
   },
   computed: {
     repos() {
-      return this.$store.state.repos.list.filter((el: { id: Number }) => {
+      return this.$store.state.repos.list.filter((el) => {
         return !this.$store.state.repos.favourites.includes(el.id)
       })
     },
     favourites() {
-      return this.$store.state.repos.list.filter((el: { id: Number }) => {
+      return this.$store.state.repos.list.filter((el) => {
         return this.$store.state.repos.favourites.includes(el.id)
       })
     },
