@@ -1,8 +1,8 @@
-function compare( a, b ) {
-  if ( a.name.toLowerCase() < b.name.toLowerCase() ){
+function compare(a, b) {
+  if (a.name.toLowerCase() < b.name.toLowerCase()) {
     return -1;
   }
-  if ( a.name.toLowerCase() > b.name.toLowerCase() ){
+  if (a.name.toLowerCase() > b.name.toLowerCase()) {
     return 1;
   }
   return 0;
@@ -46,8 +46,9 @@ export const mutations = {
       res = await this.$axios.get(url);
       let { data } = res;
       repos = repos.concat(data);
-      url = res.headers.link.split(',').filter(el => el.includes('next'))[0].match(/<(.*)>/sg)[0].replace(/[<|>]/g,"")
-    } while(res.headers.link.includes('next'));
+      if (res.headers.link.split(',').filter(el => el.includes('next'))[0])
+        url = res.headers.link.split(',').filter(el => el.includes('next'))[0].match(/<(.*)>/sg)[0].replace(/[<|>]/g, "")
+    } while (res.headers.link.includes('next'));
     repos = repos.sort(compare);
     this.commit("repos/setRepos", repos);
   },
@@ -61,9 +62,9 @@ export const mutations = {
     this.commit("files/setFiles", tree.data.tree);
   },
   removeFavourite(state, id) {
-      state.favourites = state.favourites.filter(el => el !== id);
+    state.favourites = state.favourites.filter(el => el !== id);
   },
   addFavourite(state, id) {
-      state.favourites.push(id);
+    state.favourites.push(id);
   },
 }
