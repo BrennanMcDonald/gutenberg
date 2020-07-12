@@ -1,4 +1,4 @@
-FROM node:10.7
+FROM node:latest
 
 ENV APP_ROOT /src
 
