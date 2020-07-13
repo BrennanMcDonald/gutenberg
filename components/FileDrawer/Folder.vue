@@ -6,7 +6,7 @@
       {{ folder.name }}
     </span>
     <div v-show="!collapsed || folder.name === '/'">
-      <folder v-for="folder in folder.children" v-bind:key="folder.name" :folder="folder" />
+      <folder v-for="folder in folder.children" v-bind:key="folder.name" :folder="folder" :onMenuItemSelected="onMenuItemSelected" />
       <div
         v-for="file in folder.files"
         v-bind:key="file.path"
@@ -32,7 +32,7 @@ import {
 
 export default Vue.extend({
   name: 'folder',
-  props: ['depth', 'folder'],
+  props: ['depth', 'folder', 'onMenuItemSelected'],
   components: {
     Folder,
   },
@@ -48,7 +48,8 @@ export default Vue.extend({
         path: file.path,
         name,
         owner,
-      })
+      });
+      this.onMenuItemSelected();
     },
     toggleCollapse() {
       this.collapsed = !this.collapsed

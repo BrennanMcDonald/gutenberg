@@ -7,7 +7,7 @@
       :newFile="() => showNewFile = !showNewFile"
     />
     <div class="flex overflow-hidden h-full">
-      <file-drawer :showMenu="showMenu" :files="files" :selectedFile="selectedFile" />
+      <file-drawer :showMenu="showMenu" :files="files" :selectedFile="selectedFile" :onMenuItemSelected="() => { showMenu = false }" />
       <div class="flex-1 overflow-y-scroll h-screen flex">
         <file :owner="owner" :repo="name" :sha="selectedFile.sha" :path="selectedFile.path" />
       </div>
@@ -38,7 +38,7 @@ export default Vue.extend({
   computed: {
     files() {
       let { files } = this.$store.state.files
-      return files.filter((el: { path: String }) => el.path.includes('.md'))
+      return files.filter((el) => el.path.includes('.md'))
     },
     selectedFile() {
       return this.$store.state.files.selected

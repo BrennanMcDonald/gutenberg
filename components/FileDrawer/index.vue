@@ -1,9 +1,9 @@
 <template>
   <div
     class="fixed z-20 lg:relative h-screen bg-white transition-all duration-500 border-collapse overflow-y-scroll"
-    v-bind:class="[showMenu?'w-1/3 lg:w-500':'w-0']"
+    v-bind:class="[showMenu?'w-screen lg:w-500':'w-0']"
   >
-    <folder :folder="directory_tree" />
+    <folder :folder="directory_tree" :onMenuItemSelected="onMenuItemSelected" />
   </div>
 </template>
 
@@ -21,7 +21,7 @@ var tree = {
 }
 
 export default Vue.extend({
-  props: ['files', 'showMenu', 'selectedFile'],
+  props: ['files', 'showMenu', 'selectedFile', 'onMenuItemSelected'],
   data() {
     return {
       newFile: {
@@ -46,6 +46,7 @@ export default Vue.extend({
         name,
         owner,
       });
+      this.onMenuItemSelected();
     },
   },
   computed: {
