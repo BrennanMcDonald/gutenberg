@@ -26,7 +26,17 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { 
+        rel: 'icon', 
+        type: 'image/x-icon', 
+        href: '/favicon.ico' 
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Recursive:wght@300;400;500;600;700;800;900&display=swap',
+      },
+    ],
   },
   /*
    ** Global CSS
@@ -87,14 +97,7 @@ export default {
         redirect_uri: github_redirect_uri,
       },
     },
-    redirect: {
-      login: '/',
-      logout: '/',
-      callback: '/',
-      home: '/repos'
-    },
-    fullPathRedirect: true,
-    watchLoggedIn: true
+    redirect: false,
   },
   /*
    ** Axios module configuration

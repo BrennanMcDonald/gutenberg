@@ -1,7 +1,7 @@
 module.exports = {
   theme: {
     fontFamily: {
-      'sans': ['Helvetica', 'Arial', 'sans-serif'],
+      'sans': ['recursive', 'Helvetica', 'Arial', 'sans-serif'],
     },
     extend: {
       width: {
