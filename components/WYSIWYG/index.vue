@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col m-10 flex-1 shadow">
+  <div class="flex flex-col my-10 flex-1 shadow">
     <div class="editor-menu py-2 relative w-full border border-t-0 border-l-0 border-r-0 z-10">
       <template v-for="(Item, Index) in MenuButtons">
         <button

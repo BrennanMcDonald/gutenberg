@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div class='w-full'>
+    <h2>{{this.gist.name}}</h2>
     <template v-for="(Item, Index) in MenuButtons">
       <button
         class="h-full w-10"
         @click="Item.command"
         v-bind:key="Index"
         v-show="md_toggle"
-        v-if="Item.hasOwnProperty('icon') || Item.hasOwnProperty('text')"
-      >
+        v-if="Item.hasOwnProperty('icon') || Item.hasOwnProperty('text')">
         <fa v-show="Item.icon" :icon="Item.icon" />
         <span v-show="Item.text">
           <b>{{Item.text}}</b>
@@ -15,7 +15,7 @@
       </button>
       <dropdown v-show="md_toggle" class="px-2" v-bind:key="Index" :options="Item" v-else />
     </template>
-    <wysiwyg :value="file_markdown" @input="fileChanged" />
+    <wysiwyg :value="file_markdown" />
   </div>
 </template>
 
@@ -26,26 +26,23 @@ import WYSIWYG from '~/components/WYSIWYG/index.vue'
 import MenuButtons from './WYSIWYG/_menuButtons'
 
 export default Vue.extend({
-  props: ['owner', 'repo', 'path', 'editor_key'],
+  props: ['gist', 'editor_key'],
+  mounted() {
+    this.$axios.get(this.gist.raw_url).then(res => {
+      console.log("MNTED")
+      console.log(res);
+    })
+  },
   components: {
     WYSIWYG,
   },
-  methods: {
-    fileChanged(markdown: String) {
-      let { path } = this
-      this.$store.commit('files/updateContent', { markdown, path })
-    },
+  data() {
+    return {
+      file_markdown: '',
+      md_toggle: false
+    }
   },
   computed: {
-    file_markdown() {
-      let { selected_file_contents } = this.$store.state.files
-      if (selected_file_contents !== '') {
-        let markdown = Buffer.from(selected_file_contents, 'base64').toString()
-        return markdown
-      } else {
-        return ''
-      }
-    },
     MenuButtons() {
       return MenuButtons
     },

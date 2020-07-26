@@ -1,16 +1,17 @@
 <template>
   <div class="h-screen flex flex-col">
     <editor-title-bar
-      mode="repo"
       :repo="name"
       :owner="owner"
+      mode="gist"
       :menuToggle="() => showMenu = !showMenu"
       :newFile="() => showNewFile = !showNewFile"
     />
     <div class="flex overflow-hidden h-full">
-      <file-drawer :showMenu="showMenu" :files="files" :selectedFile="selectedFile" :onMenuItemSelected="() => { showMenu = false }" />
-      <div class="flex-1 overflow-y-scroll h-screen flex">
-        <file :owner="owner" :repo="name" :sha="selectedFile.sha" :path="selectedFile.path" />
+      <div class="flex-1 overflow-y-scroll h-screen flex justify-center">
+        <div class="w-full container" v-for="(file, name) in selectedGist.files" v-bind:key="name">
+          <gist-file :gist="file" />
+        </div>
       </div>
     </div>
   </div>
@@ -22,13 +23,12 @@ import { mapMutations, mapGetters } from 'vuex'
 import File from '~/components/File.vue'
 import EditorTitleBar from '~/components/EditorTitleBar.vue'
 import FileDrawer from '~/components/FileDrawer/index.vue'
+import GistFile from '~/components/GistFile.vue'
 
 export default Vue.extend({
   middleware: 'auth',
-  mounted() {
-    let { owner, name: repo } = this.$route.params
-    this.$store.commit('files/clearFileList')
-    this.$store.commit('files/getFileList', { owner, repo })
+  components: {
+    GistFile,
   },
   data() {
     return {
@@ -38,17 +38,10 @@ export default Vue.extend({
   },
   computed: {
     files() {
-      let { files } = this.$store.state.files
-      return files.filter((el) => el.path.includes('.md'))
+      return this.$store.state.gists.selected.files;
     },
-    selectedFile() {
-      return this.$store.state.files.selected
-    },
-    name() {
-      return this.$route.params.name
-    },
-    owner() {
-      return this.$route.params.owner
+    selectedGist() {
+      return this.$store.state.gists.selected;
     },
   },
   beforeRouteLeave(to, from, next) {
@@ -62,7 +55,7 @@ export default Vue.extend({
         next(false)
       }
     } else {
-      next();
+      next()
     }
   },
 })

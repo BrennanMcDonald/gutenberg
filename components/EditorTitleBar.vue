@@ -3,7 +3,7 @@
     <button class="text-lg py-2 px-4" v-on:click="toggleMenu">
       <fa :icon="faBars" />
     </button>
-    <h1 @click="() => this.$router.push('/repos')" class="cursor-pointer self-center text-xl">Back to Repo List</h1>
+    <h1 @click="() => this.$router.push(`/${mode}s`)" class="cursor-pointer self-center text-xl">Back to {{mode}} List</h1>
     <button
       @click="newFile"
       class="py-2 px-4 rounded border ml-4 hover:bg-gray-500 hover:text-white cursor-pointer -mr-1"
@@ -25,7 +25,7 @@ import Vue from 'vue'
 import { faPlusCircle, faBars } from '@fortawesome/free-solid-svg-icons'
 
 export default Vue.extend({
-  props: ['repo', 'menuToggle', 'owner', 'editorRef', 'newFile'],
+  props: ['repo', 'menuToggle', 'owner', 'editorRef', 'newFile', 'mode'],
   computed: {
     faPlusCircle() {
       return faPlusCircle
